@@ -16,7 +16,7 @@ const tools: { id: ShapeTool; label: string; icon: React.ComponentType<{ classNa
   { id: "eraser", label: "Eraser", icon: Eraser },
 ];
 
-const colors = ["#5D3521", "#7B4A2D", "#A2663A", "#D8943B", "#2F241B", "#8A6A43"];
+const colors = ["#18181B", "#52525B", "#8B5CF6", "#0EA5E9", "#22C55E", "#F43F5E"];
 
 export function Toolbar() {
   const tool = useBoardStore((state) => state.tool);
@@ -31,7 +31,11 @@ export function Toolbar() {
         <Button
           key={item.id}
           variant={tool === item.id ? "primary" : "ghost"}
-          className="h-12 w-full rounded-2xl px-0"
+          className={
+            tool === item.id
+              ? "h-12 w-full rounded-2xl bg-violet-500 px-0 text-white shadow-lg shadow-violet-500/20 hover:bg-violet-400"
+              : "h-12 w-full rounded-2xl px-0 text-zinc-200 hover:bg-white/5"
+          }
           onClick={() => setTool(item.id)}
           title={item.label}
         >
@@ -39,13 +43,13 @@ export function Toolbar() {
         </Button>
       ))}
 
-      <div className="mt-3 border-t border-[#E7C494]/15 pt-3">
+      <div className="mt-3 border-t border-white/10 pt-3">
         <div className="grid grid-cols-2 gap-2">
           {colors.map((color) => (
             <button
               key={color}
               type="button"
-              className={`h-8 rounded-xl border ${stroke === color ? "border-[#F8E8C8]" : "border-transparent"}`}
+              className={`h-8 rounded-xl border ${stroke === color ? "border-white" : "border-transparent"}`}
               style={{ backgroundColor: color }}
               onClick={() => setStyle({ stroke: color, fill: `${color}22` })}
             />
@@ -53,9 +57,9 @@ export function Toolbar() {
         </div>
 
         <div className="mt-4">
-          <label className="mb-2 block text-xs text-[#C8AA82]">Stroke</label>
+          <label className="mb-2 block text-xs text-zinc-300">Stroke</label>
           <div className="flex items-center gap-2">
-            <Minus className="h-4 w-4 text-[#BFA07B]" />
+            <Minus className="h-4 w-4 text-zinc-400" />
             <input
               type="range"
               min={1}

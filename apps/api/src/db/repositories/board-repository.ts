@@ -74,6 +74,12 @@ export async function updateBoardRecord(boardId: string, data: Partial<Pick<Boar
   });
 }
 
+export async function deleteBoardRecord(boardId: string) {
+  return prisma.board.delete({
+    where: { id: boardId },
+  });
+}
+
 export async function createBoardSnapshot(input: {
   boardId: string;
   version: number;

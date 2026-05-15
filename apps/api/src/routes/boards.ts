@@ -61,3 +61,12 @@ boardsRouter.patch("/:boardId", validateBody(updateBoardSchema), async (request,
     next(error);
   }
 });
+
+boardsRouter.delete("/:boardId", async (request, response, next) => {
+  try {
+    await boardService.delete(String(request.params.boardId), request.authUser!);
+    response.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+});

@@ -4,8 +4,8 @@ import { createPathShape, createShapeFromDrag, createTextShape } from "./shape-f
 
 describe("shape factories", () => {
   const style = {
-    stroke: "#5D3521",
-    fill: "rgba(93, 53, 33, 0.14)",
+    stroke: "#18181B",
+    fill: "rgba(24, 24, 27, 0.08)",
     strokeWidth: 3,
     createdBy: "user-1",
   };

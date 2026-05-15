@@ -32,7 +32,7 @@ export function OwlLogo({ className, markClassName, showText = true }: OwlLogoPr
       {showText ? (
         <div>
           <p className="text-sm font-semibold tracking-wide text-[#F8E8C8]">CanvasFlow</p>
-          <p className="text-xs text-[#BFA07B]">Brown sketchbook collaboration</p>
+          <p className="text-xs text-[#BFA07B]">sketchbook collaboration</p>
         </div>
       ) : null}
     </div>

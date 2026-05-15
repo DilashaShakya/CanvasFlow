@@ -8,7 +8,7 @@ import { SplashPlayground } from "@/components/splash-playground";
 const features = [
   {
     title: "Draw like a notebook",
-    description: "Brown ink, warm paper, pencil strokes, shapes, text, and erasing that feels like a sketchbook.",
+    description: "Warm paper, brown ink, pencil strokes, shapes, text, and erasing.",
     icon: Palette,
   },
   {
@@ -18,7 +18,7 @@ const features = [
   },
   {
     title: "Live creative presence",
-    description: "Watch cursors, edits, and sketches move together in realtime with a playful owl-branded workspace.",
+    description: "Watch cursors, edits, and sketches move together in realtime.",
     icon: Users,
   },
 ];
@@ -58,8 +58,8 @@ export default function HomePage() {
                 Sketch, splash, and share ideas live.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-[#6B3F24]">
-                CanvasFlow is a collaborative board with a warm notebook personality: dotted paper, owl branding, playful
-                brown borders, and direct room links that let people join fast.
+                CanvasFlow is a collaborative board with dotted paper, warm brown details, and direct room links that let
+                people join fast.
               </p>
             </div>
 

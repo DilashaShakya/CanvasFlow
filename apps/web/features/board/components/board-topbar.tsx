@@ -6,7 +6,6 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { OwlLogo } from "@/components/owl-logo";
 import { useBoardStore } from "@/features/board/store/use-board-store";
 
 type BoardTopbarProps = {
@@ -23,28 +22,26 @@ export function BoardTopbar({ roomId }: BoardTopbarProps) {
 
   return (
     <header className="glass-panel flex items-center justify-between rounded-3xl px-5 py-4">
-      <div className="flex items-center gap-4">
-        <OwlLogo showText={false} markClassName="h-10 w-10 rounded-xl" />
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#BFA07B]">CanvasFlow</p>
-          <h1 className="mt-1 text-xl font-semibold text-[#FFF5DF]">{title}</h1>
-        </div>
+      <div>
+        <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">CanvasFlow</p>
+        <h1 className="mt-1 text-xl font-semibold text-white">{title}</h1>
       </div>
 
       <div className="flex items-center gap-3">
-        <span className="rounded-full border border-[#D8943B]/30 bg-[#D8943B]/10 px-3 py-1 text-xs text-[#F8E8C8]">
+        <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300">
           {connectionStatus}
         </span>
-        <Button variant="secondary" onClick={undo}>
+        <Button variant="secondary" className="border-white/10 bg-white/5 text-zinc-100 hover:border-violet-400/50 hover:bg-violet-500/10" onClick={undo}>
           <Undo2 className="mr-2 h-4 w-4" />
           Undo
         </Button>
-        <Button variant="secondary" onClick={redo}>
+        <Button variant="secondary" className="border-white/10 bg-white/5 text-zinc-100 hover:border-violet-400/50 hover:bg-violet-500/10" onClick={redo}>
           <Redo2 className="mr-2 h-4 w-4" />
           Redo
         </Button>
         <Button
           variant="secondary"
+          className="border-white/10 bg-white/5 text-zinc-100 hover:border-violet-400/50 hover:bg-violet-500/10"
           onClick={async () => {
             await navigator.clipboard.writeText(roomId);
             setCopied("id");
@@ -56,6 +53,7 @@ export function BoardTopbar({ roomId }: BoardTopbarProps) {
         </Button>
         <Button
           variant="secondary"
+          className="border-white/10 bg-white/5 text-zinc-100 hover:border-violet-400/50 hover:bg-violet-500/10"
           onClick={async () => {
             const shareUrl = `${window.location.origin}/join/${encodeURIComponent(roomId)}`;
             await navigator.clipboard.writeText(shareUrl);
@@ -66,11 +64,11 @@ export function BoardTopbar({ roomId }: BoardTopbarProps) {
           {copied === "link" ? <Check className="mr-2 h-4 w-4" /> : <Link2 className="mr-2 h-4 w-4" />}
           {copied === "link" ? "Copied link" : "Copy share link"}
         </Button>
-        <Button variant="ghost" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}>
+        <Button variant="ghost" className="text-zinc-200 hover:bg-white/5" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}>
           {resolvedTheme === "dark" ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
         </Button>
         <Link href="/dashboard">
-          <Button variant="ghost">Dashboard</Button>
+          <Button variant="ghost" className="text-zinc-200 hover:bg-white/5">Dashboard</Button>
         </Link>
       </div>
     </header>

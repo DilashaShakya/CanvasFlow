@@ -43,7 +43,7 @@ export function BoardShell({ boardId }: BoardShellProps) {
   }, [boardId, lastChangeOrigin, scene, sessionId, token]);
 
   if (loading) {
-    return <main className="grid min-h-screen place-items-center text-[#C8AA82]">Loading collaborative board...</main>;
+    return <main className="grid min-h-screen place-items-center text-zinc-400">Loading collaborative board...</main>;
   }
 
   if (error || !token || !user || !boardMeta) {
@@ -51,7 +51,7 @@ export function BoardShell({ boardId }: BoardShellProps) {
       <main className="grid min-h-screen place-items-center px-6">
         <div className="glass-panel max-w-md rounded-3xl p-8 text-center">
           <p className="text-lg font-semibold text-rose-300">{error ?? "You need to sign in first."}</p>
-          <p className="mt-3 text-sm text-[#C8AA82]">
+          <p className="mt-3 text-sm text-zinc-400">
             This can happen if the board link is stale or the local database was reset. Create or join a current room from the dashboard.
           </p>
           <Link href="/dashboard">
@@ -66,7 +66,7 @@ export function BoardShell({ boardId }: BoardShellProps) {
     <main className="min-h-screen p-5">
       <div className="space-y-5">
         <BoardTopbar roomId={boardMeta.roomSlug} />
-        <div className="grid gap-5 xl:grid-cols-[88px_minmax(0,1fr)_288px]">
+        <div className="grid gap-5" style={{ gridTemplateColumns: "88px minmax(0, 1fr)" }}>
           <Toolbar />
           <div className="relative">
             <CursorPresence />
@@ -78,7 +78,9 @@ export function BoardShell({ boardId }: BoardShellProps) {
               userColor={user.avatarColor}
             />
           </div>
-          <CollaboratorsSidebar />
+          <div className="col-span-2 2xl:col-span-1">
+            <CollaboratorsSidebar />
+          </div>
         </div>
       </div>
     </main>

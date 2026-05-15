@@ -46,6 +46,7 @@ export const api = {
     join: (token: string, roomId: string) =>
       request<{ board: BoardSummary }>("/boards/join", { method: "POST", body: JSON.stringify({ roomId }) }, token),
     bootstrap: (token: string, boardId: string) => request<BoardBootstrap>(`/boards/${boardId}/bootstrap`, undefined, token),
+    delete: (token: string, boardId: string) => request<void>(`/boards/${boardId}`, { method: "DELETE" }, token),
   },
 };
 

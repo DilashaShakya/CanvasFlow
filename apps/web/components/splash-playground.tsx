@@ -71,10 +71,7 @@ export function SplashPlayground() {
       ))}
       <div className="absolute bottom-8 left-8 right-8 rounded-3xl border-2 border-dashed border-[#6B3F24]/35 bg-[#FFF7E8]/82 p-5 text-[#4B2B19] backdrop-blur-sm">
         <p className="text-sm font-bold uppercase tracking-[0.26em] text-[#A2663A]">Interactive sketchbook</p>
-        <p className="mt-2 text-2xl font-semibold">Splash ideas before you open a live room.</p>
-        <p className="mt-2 text-sm leading-6 text-[#7B4A2D]">
-          A playful preview of CanvasFlow: paper texture, brown ink, shared boards, and live creative motion.
-        </p>
+        <p className="mt-2 text-2xl font-semibold">Splash ideas before opening a live room.</p>
       </div>
       <div className="absolute right-8 top-8 rotate-3 rounded-2xl bg-[#F3D9AA] px-4 py-3 text-sm font-medium text-[#5D3521] shadow-[5px_5px_0_#6B3F24]/40">
         color notes

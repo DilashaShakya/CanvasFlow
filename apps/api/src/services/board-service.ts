@@ -8,6 +8,7 @@ import {
   createBoardEvent,
   createBoardRecord,
   createBoardSnapshot,
+  deleteBoardRecord,
   ensureMembership,
   extractScene,
   getBoardByRoom,
@@ -158,6 +159,22 @@ export const boardService = {
 
     const updated = await updateBoardRecord(boardId, patch);
     return serializeBoard(updated);
+  },
+
+  async delete(boardId: string, user: AuthUser) {
+    const board = await getBoardWithRelations(boardId);
+    if (!board) {
+      throw createHttpError(404, "Board not found");
+    }
+
+    if (board.ownerId !== user.id) {
+      throw createHttpError(403, "Only the owner can delete this board");
+    }
+
+    await flushAutosave(boardId);
+    sceneCache.delete(boardId);
+    autosaveQueue.delete(boardId);
+    await deleteBoardRecord(boardId);
   },
 
   async getBootstrap(boardId: string, user: AuthUser) {
