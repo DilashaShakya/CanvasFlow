@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: canvasflow
+          POSTGRES_USER: canvasflow
+          POSTGRES_PASSWORD: canvasflow
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U canvasflow -d canvasflow"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://canvasflow:canvasflow@localhost:5432/canvasflow
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: ci-secret-key-ci-secret-key-123456
+      CLIENT_URL: http://localhost:3000
+      PORT: 4000
+      AUTO_SAVE_DEBOUNCE_MS: 1500
+      SOCKET_RATE_LIMIT_PER_MINUTE: 240
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      NEXT_PUBLIC_SOCKET_URL: http://localhost:4000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.16.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Generate Prisma client
+        run: pnpm --filter @canvasflow/api prisma:generate
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

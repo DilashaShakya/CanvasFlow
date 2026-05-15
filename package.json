@@ -1,0 +1,19 @@
+{
+  "name": "canvasflow",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.16.1",
+  "scripts": {
+    "dev": "npx pnpm@10.16.1 -r --parallel dev",
+    "build": "npx pnpm@10.16.1 -r build",
+    "lint": "npx pnpm@10.16.1 -r lint",
+    "typecheck": "npx pnpm@10.16.1 -r typecheck",
+    "test": "npx pnpm@10.16.1 -r test",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
+  }
+}

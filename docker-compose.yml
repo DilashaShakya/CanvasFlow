@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: canvasflow
+      POSTGRES_USER: canvasflow
+      POSTGRES_PASSWORD: canvasflow
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://canvasflow:canvasflow@postgres:5432/canvasflow}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      JWT_SECRET: ${JWT_SECRET:-replace-with-a-long-random-secret-at-least-32-characters}
+      CLIENT_URL: ${CLIENT_URL:-http://localhost:3001}
+      PORT: ${PORT:-4000}
+      AUTO_SAVE_DEBOUNCE_MS: ${AUTO_SAVE_DEBOUNCE_MS:-1500}
+      SOCKET_RATE_LIMIT_PER_MINUTE: ${SOCKET_RATE_LIMIT_PER_MINUTE:-240}
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+      - api-node-modules:/app/node_modules
+      - api-app-node-modules:/app/apps/api/node_modules
+      - api-shared-node-modules:/app/packages/shared/node_modules
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://127.0.0.1:4000}
+      NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL:-http://127.0.0.1:4000}
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - web-node-modules:/app/node_modules
+      - web-app-node-modules:/app/apps/web/node_modules
+      - web-shared-node-modules:/app/packages/shared/node_modules
+
+volumes:
+  postgres-data:
+  redis-data:
+  api-node-modules:
+  api-app-node-modules:
+  api-shared-node-modules:
+  web-node-modules:
+  web-app-node-modules:
+  web-shared-node-modules:

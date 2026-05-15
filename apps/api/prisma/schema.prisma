@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BoardVisibility {
+  private
+  shared
+}
+
+enum BoardMemberRole {
+  owner
+  editor
+  viewer
+  guest
+}
+
+enum BoardEventType {
+  shape_create
+  shape_update
+  shape_delete
+  selection_change
+  presence_editing
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String?       @unique
+  passwordHash String?
+  displayName  String
+  avatarColor  String
+  isGuest      Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  ownedBoards  Board[]       @relation("BoardOwner")
+  memberships  BoardMember[]
+  snapshots    BoardSnapshot[] @relation("SnapshotActor")
+  events       BoardEvent[]  @relation("EventActor")
+}
+
+model Board {
+  id                  String          @id @default(cuid())
+  title               String
+  roomSlug            String          @unique
+  visibility          BoardVisibility @default(private)
+  ownerId             String
+  lastSnapshotVersion Int             @default(0)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  owner               User            @relation("BoardOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members             BoardMember[]
+  snapshots           BoardSnapshot[]
+  events              BoardEvent[]
+}
+
+model BoardMember {
+  id         String          @id @default(cuid())
+  boardId     String
+  userId      String?
+  guestName   String?
+  role        BoardMemberRole
+  joinedAt    DateTime       @default(now())
+  board       Board           @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user        User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([boardId, userId])
+}
+
+model BoardSnapshot {
+  id         String   @id @default(cuid())
+  boardId     String
+  version     Int
+  sceneJson   Json
+  createdById String?
+  createdAt   DateTime @default(now())
+  board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  createdBy   User?     @relation("SnapshotActor", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([boardId, version(sort: Desc)])
+}
+
+model BoardEvent {
+  id         String         @id @default(cuid())
+  boardId     String
+  version     Int
+  actorId     String?
+  actorName   String
+  eventType   BoardEventType
+  payloadJson Json
+  createdAt   DateTime      @default(now())
+  board       Board          @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  actor       User?          @relation("EventActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([boardId, version(sort: Desc)])
+}
