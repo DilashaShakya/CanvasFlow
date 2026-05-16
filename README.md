@@ -1,6 +1,6 @@
 # CanvasFlow
 
-CanvasFlow is a production-style realtime collaborative whiteboard built as a portfolio project to demonstrate modern frontend engineering, event-driven backend design, and scalable collaboration infrastructure.
+CanvasFlow is a realtime collaborative whiteboard built as a portfolio project to demonstrate modern frontend engineering, event-driven backend design, and scalable collaboration infrastructure.
 
 ## Stack
 
